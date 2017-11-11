@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Weight Tracker</string>
+
+    <string name="add">Add</string>
+    <string name="results">Results</string>
+    <string name="weight">Weight</string>
+    <string name="date">Date</string>
+
+    <!-- Headers -->
+    <string name="Column0">ID</string>
+    <string name="Column1">Date</string>
+    <string name="Column2">Weight</string>
+
+
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+</resources>
