@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.kamil.weighttracker.model.WeightResult;
+import com.example.kamil.weighttracker.model.Result;
 
 import java.util.ArrayList;
 
@@ -39,7 +39,7 @@ public class WeightDbHelper extends SQLiteOpenHelper{
         onUpgrade(db,oldVersion,newVersion);
     }
 
-    public boolean insertResult(WeightResult result){
+    public boolean insertResult(Result result){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(WeightTableInfo.COLUMN_NAME_WEIGHT, result.getWeightInGrams());
@@ -49,7 +49,7 @@ public class WeightDbHelper extends SQLiteOpenHelper{
         db.close();
         return true;
     }
-    public boolean updateResult(int id, WeightResult result) {
+    public boolean updateResult(int id, Result result) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -68,7 +68,7 @@ public class WeightDbHelper extends SQLiteOpenHelper{
         db.close();
         return result != -1;
     }
-    public ArrayList<WeightResult> getData() {
+    public ArrayList<Result> getData() {
         SQLiteDatabase db = getReadableDatabase();
         String[] projection = {
                 WeightTableInfo._ID,
@@ -86,18 +86,18 @@ public class WeightDbHelper extends SQLiteOpenHelper{
                 null,
                 null);
 
-        ArrayList<WeightResult> results= new ArrayList<WeightResult>();
+        ArrayList<Result> results= new ArrayList<Result>();
 
 
         int itemID;
         long date;
         int weight;
-        WeightResult result;
+        Result result;
         while(cursor.moveToNext()) {
             itemID = cursor.getInt(cursor.getColumnIndexOrThrow(WeightTableInfo._ID));
             date = cursor.getLong(cursor.getColumnIndexOrThrow(WeightTableInfo.COLUMN_NAME_DATE));
             weight = cursor.getInt(cursor.getColumnIndexOrThrow(WeightTableInfo.COLUMN_NAME_WEIGHT));
-            result = new WeightResult(itemID,weight,date);
+            result = new Result(itemID,weight,date);
             results.add(result);
         }
         return results;

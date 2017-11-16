@@ -17,8 +17,8 @@ import java.util.Locale;
  */
 
 public class EditCalendar {
-    public static final String DATE_STRING_FORMAT = "dd/MM/yyyy";
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_STRING_FORMAT, Locale.UK); // TODO
+    private static final String DATE_STRING_FORMAT = "dd/MM/yyyy";
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_STRING_FORMAT, Locale.UK);
 
     private Calendar calendar = Calendar.getInstance();
     private EditText dateEditText;
@@ -44,27 +44,28 @@ public class EditCalendar {
     }
 
     private void updateEditText(){
-        dateEditText.setText(getStringDate());
+        dateEditText.setText(toString());
     }
-
-    public Date getFormattedDate() throws ParseException {
-        return DATE_FORMAT.parse(dateEditText.getText().toString());
-    }
-    public String getStringDate(){
-        return DATE_FORMAT.format(calendar.getTime());
-    }
-
     public long getLongDate(){
-        long dateInInteger = 0;
+        long dateInLong = 0;
         try {
-            Date date = getFormattedDate();
-            dateInInteger = date.getTime();
+            Date date = DATE_FORMAT.parse(dateEditText.getText().toString());
+            dateInLong = date.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return dateInInteger;
+        return dateInLong;
     }
-    public static String getDateLongToString(long date){
+    /**
+     Display date in specify date format
+     */
+    public String toString(){
+        return DATE_FORMAT.format(calendar.getTime());
+    }
+    /**
+     Display date in specify date format
+     */
+    public static String toString(long date){
         return DATE_FORMAT.format(date);
     }
 }

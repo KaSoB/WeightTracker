@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Weight input filter -->
+    <integer name="WeightDigitsBeforeZero">3</integer>
+    <integer name="WeightDigitsAfterZero">1</integer>
+</resources>

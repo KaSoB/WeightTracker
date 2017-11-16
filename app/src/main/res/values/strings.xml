@@ -5,13 +5,20 @@
     <string name="results">Results</string>
     <string name="weight">Weight</string>
     <string name="date">Date</string>
-
     <!-- Headers -->
     <string name="Column0">ID</string>
     <string name="Column1">Date</string>
     <string name="Column2">Weight</string>
 
+    <!-- Menu Items -->
+    <string name="Settings">Settings</string>
 
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+
+    <!-- Preferences -->
+    <string name="MassUnitsTitle">Mass unit</string>
+    <string name="MassUnitsSummary">Select kg or lbs</string>
+    <string name="MassUnitsKey">MassUnit</string>
+
 </resources>

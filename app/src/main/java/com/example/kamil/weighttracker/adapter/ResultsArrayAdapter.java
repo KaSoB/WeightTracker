@@ -13,10 +13,11 @@ import android.widget.TextView;
 
 import com.example.kamil.weighttracker.R;
 import com.example.kamil.weighttracker.model.EditCalendar;
-import com.example.kamil.weighttracker.model.WeightResult;
+import com.example.kamil.weighttracker.model.Result;
 
 import java.util.ArrayList;
-import java.util.Locale;
+
+import static com.example.kamil.weighttracker.activity.PreferencesActivity.unit;
 
 public class ResultsArrayAdapter extends ArrayAdapter{
     private class ViewHolder {
@@ -26,7 +27,7 @@ public class ResultsArrayAdapter extends ArrayAdapter{
     }
 
     private Context context;
-    private ArrayList<WeightResult> items;
+    private ArrayList<Result> items;
 
     public ResultsArrayAdapter(Context context, int textViewResourceId, ArrayList objects) {
         super(context,textViewResourceId, objects);
@@ -53,10 +54,10 @@ public class ResultsArrayAdapter extends ArrayAdapter{
             holder = (ViewHolder) convertView.getTag();
         }
 
-        WeightResult result = items.get(position);
+        Result result = items.get(position);
         holder.id.setText(String.valueOf(position+1));
-        holder.date.setText(EditCalendar.DATE_FORMAT.format(result.getDataLong())); // TODO
-        holder.weight.setText(String.format(Locale.UK, "%.1f",((float)result.getWeightInGrams())/1000f) ); // TODO
+        holder.date.setText(EditCalendar.toString(result.getDataLong()));
+        holder.weight.setText(result.getWeight().toString(unit));
         return convertView;
     }
 }

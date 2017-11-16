@@ -1,8 +1,11 @@
 package com.example.kamil.weighttracker.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,34 +17,37 @@ import com.example.kamil.weighttracker.adapter.ResultsArrayAdapter;
 import com.example.kamil.weighttracker.R;
 import com.example.kamil.weighttracker.database.WeightDbHelper;
 import com.example.kamil.weighttracker.model.EditCalendar;
-import com.example.kamil.weighttracker.model.WeightResult;
+import com.example.kamil.weighttracker.model.Result;
+import com.example.kamil.weighttracker.model.Weight;
 import com.example.kamil.weighttracker.utils.DecimalDigitsInputFilter;
 
 import java.util.ArrayList;
+import static com.example.kamil.weighttracker.activity.PreferencesActivity.unit;
 
 public class ResultActivity extends AppCompatActivity {
     ResultsArrayAdapter resultsArrayAdapter;
-    WeightDbHelper DbHelper;
-    ArrayList<WeightResult> results;
+    WeightDbHelper weightDb;
+    ArrayList<Result> results;
+    Result selectedItem;
+
     TextView resultTextView;
     ListView listView;
-    WeightResult selectedItem;
     EditText resultEditText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
         resultEditText = findViewById(R.id.ResultEditText);
-        resultEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3,1)}); // TODO extract values from activities
+        resultEditText.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(
+                getResources().getInteger(R.integer.WeightDigitsBeforeZero),
+                getResources().getInteger(R.integer.WeightDigitsAfterZero))});
         resultTextView = findViewById(R.id.ResultTextView);
 
-        DbHelper = new WeightDbHelper(this);
+        weightDb = new WeightDbHelper(this);
 
-        results = DbHelper.getData(); //TODO: Find another place;
+        results = weightDb.getData();
         resultsArrayAdapter = new ResultsArrayAdapter(this,R.layout.resultlistviewelement,results);
-
 
 
         listView = findViewById(R.id.ResultsListView);
@@ -51,24 +57,23 @@ public class ResultActivity extends AppCompatActivity {
         ViewGroup headerView = (ViewGroup)getLayoutInflater().inflate(R.layout.headerslayout,
                 listView,false);
         listView.addHeaderView(headerView);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedItem = (WeightResult)adapterView.getItemAtPosition(i);
-                String data = EditCalendar.getDateLongToString(selectedItem.getDataLong());
-                String weight = WeightResult.getWeightIntToString(selectedItem.getWeightInGrams());
-                resultTextView.setText(data + " " + weight);
+                selectedItem = (Result)adapterView.getItemAtPosition(i);
+                String data = EditCalendar.toString(selectedItem.getDataLong());
+                String weight = selectedItem.getWeight().toString(unit);
+                resultTextView.setText(data);
                 resultEditText.setText(weight);
             }
         });
     }
 
-    public void EditOnClick(View view){ // TODO: REFACTOR OnClicks
+    public void EditOnClick(View view){
         if(selectedItem != null) {
-            int weightInGrams = WeightResult.getWeightStringToInt(resultEditText.getText().toString());
-            selectedItem.setWeightInGrams(weightInGrams);
-            DbHelper.updateResult(selectedItem.getId(),selectedItem);
+            int weightInGrams = Weight.valueOf(resultEditText.getText().toString(),unit);
+            selectedItem.setWeight(weightInGrams, Weight.Unit.g);
+            weightDb.updateResult(selectedItem.getId(),selectedItem);
 
             resultsArrayAdapter.notifyDataSetChanged();
             selectedItem = null;
@@ -78,9 +83,10 @@ public class ResultActivity extends AppCompatActivity {
     }
     public void DeleteOnClick(View view){
         if(selectedItem != null){
-            DbHelper.deleteResult(selectedItem.getId());
+            // delete item from database
+            weightDb.deleteResult(selectedItem.getId());
+            // delete item from list view
             results.remove(selectedItem);
-
             resultsArrayAdapter.notifyDataSetChanged();
             selectedItem = null;
             resultTextView.setText("");

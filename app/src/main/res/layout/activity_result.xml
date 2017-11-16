@@ -30,6 +30,7 @@
         android:layout_marginStart="8dp"
         android:onClick="EditOnClick"
         android:text="@string/edit"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toStartOf="parent" />
@@ -43,6 +44,7 @@
         android:layout_marginStart="8dp"
         android:onClick="DeleteOnClick"
         android:text="@string/delete"
+        android:textAllCaps="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/EditResultButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline8" />
@@ -50,15 +52,19 @@
     <TextView
         android:id="@+id/ResultTextView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ResultEditText"
+        app:layout_constraintBottom_toTopOf="@+id/ResultsListView"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline8"
@@ -78,6 +84,7 @@
         android:inputType="numberDecimal"
         android:singleLine="true"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="parent" />
